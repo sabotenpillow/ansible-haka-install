@@ -14,10 +14,10 @@ Vagrant.configure(2) do |config|
   # boxes at https://atlas.hashicorp.com/search.
   config.vm.box = 'ubuntu/trusty64'
   config.vm.hostname = 'mameshiba'
-  config.vm.network :private_network, ip: '192.168.33.19'
+  config.vm.network "private_network", ip: '192.168.33.20'
 
   config.vm.provider :virtualbox do |v|
-    v.memory = 512
+    v.memory = 1024
     v.cpus = 1
   end
 
