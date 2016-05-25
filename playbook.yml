@@ -7,3 +7,4 @@
     - apt: name="apache2"
     - service: name="apache2" state=restarted
     - template: src=index.html.j2 dest=/var/www/html/index.html
+    - apt: name="lua5.2"
