@@ -1,0 +1,8 @@
+---
+- hosts: all
+  sudo: yes
+  gather_facts: yes
+  tasks:
+    - debug: msg="hostname = {{ansible_hostname }}"
+    - apt: name="apache2"
+    - service: name="apache2" state=restarted

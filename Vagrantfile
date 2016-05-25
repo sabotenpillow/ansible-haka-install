@@ -14,13 +14,14 @@ Vagrant.configure(2) do |config|
   # boxes at https://atlas.hashicorp.com/search.
   config.vm.box = 'ubuntu/trusty64'
   config.vm.hostname = 'mameshiba'
+  config.vm.network :private_network, ip: '192.168.33.19'
 
-  cofig.vm.provider :virtualbox do |v|
+  config.vm.provider :virtualbox do |v|
     v.memory = 512
     v.cpus = 1
   end
 
-  cofig.vm.provision 'ansible' do |ansible|
+  config.vm.provision 'ansible' do |ansible|
     ansible.playbook = './playbook.yml'
   end
 
