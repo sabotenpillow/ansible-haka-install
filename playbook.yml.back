@@ -5,8 +5,7 @@
   vars:
     - haka_url: "http://github.com/haka-security/haka/releases/download/"
     - haka_ver: "0.3.0"
-    - haka_file: "haka_{{ haka_ver }}_amd64"
-    - haka_path: "/etc/haka"
+    - haka_dir: "haka_{{ haka_ver }}_source"
   tasks:
     - debug: msg="hostname = {{ ansible_hostname }}"
     - apt: name="apache2"
@@ -26,7 +25,7 @@
         - gawk
         - libedit2
         - libpcre3
-    - stat: path=/etc/{{ haka_file }}.deb
+    - stat: path=/etc/{{ haka_dir }}
       register: haka_source
     # - get_url: url="{{ haka_url }}v{{ haka_ver }}/{{ haka_dir }}.tar.gz" dest=/etc
       # when: not haka_source.stat.exists
@@ -35,9 +34,21 @@
     #   args:
     #     chdir: /etc
     #     creates: {{ haka_ver }}
-    - get_url: url="{{ haka_url }}v{{ haka_ver }}/{{ haka_file }}.deb" dest=/etc
+    - unarchive: src={{ haka_url }}v{{ haka_ver }}/haka_{{ haka_ver }}_source.tar.gz dest=/etc copy=no
       when: not haka_source.stat.exists
-    - shell: dpkg -i {{ haka_file }}.deb
-      when: haka_source.stat.exists
+    - file: path=/etc/{{ haka_dir }}/make state=directory
+    # - shell: cmake ..
+    #   args:
+    #     chdir: /etc/{{ haka_dir }}/make
+    # - shell: make
+    #   args:
+    #     chdir: /etc/{{ haka_dir }}/make
+    # - shell: make install
+    #   args:
+    #     chdir: /etc/{{ haka_dir }}/make
+    - shell: |
+        cmake ..
+        make
+        make install
       args:
-        chdir: /etc
+        chdir: /etc/{{ haka_dir }}/make
