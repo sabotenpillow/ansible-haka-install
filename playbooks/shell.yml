@@ -1,0 +1,3 @@
+- apt: name=zsh state=latest
+- git: repo=ssh://git@github.com:nechinechi/.dotfiles.git dest=$HOME/ accept_hostkey=yes
+- apt: name=tmux state=latest

@@ -1,0 +1,2 @@
+- apt: name=vim state=latest
+- git: repo=ssh://git@github.com:nechinechi/.vim.git dest=$HOME/ accept_hostkey=yes

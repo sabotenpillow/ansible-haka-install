@@ -14,7 +14,7 @@ Vagrant.configure(2) do |config|
   # boxes at https://atlas.hashicorp.com/search.
   config.vm.box = 'ubuntu/trusty64'
   config.vm.hostname = 'mameshiba'
-  config.vm.network "private_network", ip: '192.168.33.30'
+  config.vm.network :public_network, ip: '192.168.33.30', bridge: 'eth1'
 
   config.vm.provider :virtualbox do |v|
     v.memory = 1024
@@ -22,7 +22,7 @@ Vagrant.configure(2) do |config|
   end
 
   config.vm.provision 'ansible' do |ansible|
-    ansible.playbook = './playbook.yml'
+    ansible.playbook = './roles/playbook.yml'
   end
 
   # Disable automatic box update checking. If you disable this, then
