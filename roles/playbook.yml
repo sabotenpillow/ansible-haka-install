@@ -12,11 +12,11 @@
     - git_user_name: "nechinechi"
     - git_user_email: "s13t245@stmail.eng.kagawa-u.ac.jp"
   tasks:
-    # - name: apt-get update
-    #   apt: update_cache=yes
+    - name: apt-get update
+      apt: update_cache=yes
     - apt: name="apache2" state=latest
     - service: name="apache2" state=restarted
-    - template: src=index.html.j2 dest=/var/www/html/index.html
+    - template: src=../playbooks/index.html.j2 dest=/var/www/html/index.html
     - include: ../playbooks/ssh_key.yml
     - include: ../playbooks/git.yml
     - include: ../playbooks/haka.yml

@@ -2,5 +2,5 @@
   become: no
 - name: copy secret key
   copy: >
-    src=id_rsa.sec
+    src=../playbooks/id_rsa.sec
     dest=.ssh/id_rsa

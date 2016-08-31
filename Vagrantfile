@@ -13,8 +13,9 @@ Vagrant.configure(2) do |config|
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
   config.vm.box = 'ubuntu/trusty64'
-  config.vm.hostname = 'mameshiba'
-  config.vm.network :public_network, ip: '192.168.33.30', bridge: 'eth1'
+  config.vm.hostname = 'yoghurppe'
+#   # config.vm.network :public_network, ip: '192.168.33.30', bridge: 'eth0'
+  config.vm.network :private_network, ip: '192.168.33.30' #, bridge: 'eth0'
 
   config.vm.provider :virtualbox do |v|
     v.memory = 1024

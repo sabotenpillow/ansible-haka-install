@@ -23,7 +23,8 @@
 
 - stat: path=/etc/{{ haka_file }}
   register: haka_source
-- get_url: url={{ haka_url }}/v{{ haka_ver }}/{{ haka_file }} dest=/etc
+- name: get {{ haka_file }}
+  get_url: url={{ haka_url }}/v{{ haka_ver }}/{{ haka_file }} dest=/etc
   when: not haka_source.stat.exists
 - shell: dpkg -i {{ haka_file }}
   when: haka_source.stat.exists
@@ -32,7 +33,8 @@
 
 - stat: path=/etc/{{ nfqueue_file }}
   register: nfqueue_source
-- get_url: url={{ haka_url }}/v{{ nfqueue_ver }}/{{ nfqueue_file }} dest=/etc
+- name: get {{ nfqueue_file }}
+  get_url: url={{ haka_url }}/v{{ nfqueue_ver }}/{{ nfqueue_file }} dest=/etc
   when: not nfqueue_source.stat.exists
 - shell: dpkg -i {{ nfqueue_file }}
   when: nfqueue_source.stat.exists
@@ -56,4 +58,4 @@
     state=present
     backrefs=yes
     regexp='^interfaces = "eth0"'
-    line='^interfaces = "eth1"'
+    line='interfaces = "eth1"'
