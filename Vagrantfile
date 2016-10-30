@@ -15,7 +15,7 @@ Vagrant.configure(2) do |config|
   config.vm.box = 'ubuntu/trusty64'
   config.vm.hostname = 'yoghurppe'
 #   # config.vm.network :public_network, ip: '192.168.33.30', bridge: 'eth0'
-  config.vm.network :private_network, ip: '192.168.33.30' #, bridge: 'eth0'
+  config.vm.network :private_network, ip: '192.168.44.30' #, bridge: 'eth0'
 
   config.vm.provider :virtualbox do |v|
     v.memory = 1024
