@@ -14,11 +14,16 @@ Vagrant.configure(2) do |config|
   # boxes at https://atlas.hashicorp.com/search.
   config.vm.box = 'ubuntu/trusty64'
   config.vm.hostname = 'yoghurppe'
-#   # config.vm.network :public_network, ip: '192.168.33.30', bridge: 'eth0'
-  config.vm.network :private_network, ip: '192.168.44.30' #, bridge: 'eth0'
+
+  config.vm.network :public_network, bridge: 'eth1', :auto_config => false
+  # config.vm.network :private_network, ip: '192.168.44.30' #, bridge: 'eth0'
+  # config.vm.network :public_network, ip: '192.168.44.30' #, bridge: 'eth0'
+  # config.vm.network :public_network, ip: '133.92.147.168', bridge: 'eth1'
+  config.vm.network "forwarded_port", guest: 80, host: 8080
+  config.vm.network "forwarded_port", guest: 443, host: 8443
 
   config.vm.provider :virtualbox do |v|
-    v.memory = 1024
+    v.memory = 1536
     v.cpus = 1
   end
 

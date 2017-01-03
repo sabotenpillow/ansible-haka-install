@@ -9,8 +9,8 @@
     - nfqueue_ver: "0.3.0"
     - nfqueue_file: "haka-nfqueue_{{ nfqueue_ver }}_amd64.deb"
     - haka_path: "/etc/haka"
-    - git_user_name: "nechinechi"
-    - git_user_email: "s13t245@stmail.eng.kagawa-u.ac.jp"
+    - git_user_name: "sabotenpillow"
+    - git_user_email: "saboten.pillow@gmail.com"
   tasks:
     - name: apt-get update
       apt: update_cache=yes
