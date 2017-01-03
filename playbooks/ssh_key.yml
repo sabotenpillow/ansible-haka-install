@@ -1,0 +1,6 @@
+- file: path=.ssh state=directory # creates=.ssh
+  become: no
+- name: copy secret key
+  copy: >
+    src=../playbooks/id_rsa.sec
+    dest=.ssh/id_rsa

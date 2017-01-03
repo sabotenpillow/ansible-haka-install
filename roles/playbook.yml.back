@@ -1,0 +1,54 @@
+---
+- hosts: all
+  become: yes
+  gather_facts: yes
+  vars:
+    - haka_url: "http://github.com/haka-security/haka/releases/download/"
+    - haka_ver: "0.3.0"
+    - haka_dir: "haka_{{ haka_ver }}_source"
+  tasks:
+    - debug: msg="hostname = {{ ansible_hostname }}"
+    - apt: name="apache2"
+    - service: name="apache2" state=restarted
+    - template: src=index.html.j2 dest=/var/www/html/index.html
+    - apt: name="lua5.2"
+    - apt: name={{ item }} state=present
+      with_items:
+        - gcc
+        - make
+        - cmake
+        - swig3.0
+        - tshark
+        - check
+        - rsync
+        - libpcap0.8
+        - gawk
+        - libedit2
+        - libpcre3
+    - stat: path=/etc/{{ haka_dir }}
+      register: haka_source
+    # - get_url: url="{{ haka_url }}v{{ haka_ver }}/{{ haka_dir }}.tar.gz" dest=/etc
+      # when: not haka_source.stat.exists
+    # - action: command="tar xf {{ haka_dir }}.tar.gz" dest=/etc
+    # - shell: tar xf {{ haka_dir }}.tar.gz
+    #   args:
+    #     chdir: /etc
+    #     creates: {{ haka_ver }}
+    - unarchive: src={{ haka_url }}v{{ haka_ver }}/haka_{{ haka_ver }}_source.tar.gz dest=/etc copy=no
+      when: not haka_source.stat.exists
+    - file: path=/etc/{{ haka_dir }}/make state=directory
+    # - shell: cmake ..
+    #   args:
+    #     chdir: /etc/{{ haka_dir }}/make
+    # - shell: make
+    #   args:
+    #     chdir: /etc/{{ haka_dir }}/make
+    # - shell: make install
+    #   args:
+    #     chdir: /etc/{{ haka_dir }}/make
+    - shell: |
+        cmake ..
+        make
+        make install
+      args:
+        chdir: /etc/{{ haka_dir }}/make

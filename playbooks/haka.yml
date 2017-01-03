@@ -1,0 +1,61 @@
+- apt: name="lua5.2" state=latest
+- apt: name={{ item }} state=latest
+  with_items:
+    - gcc
+    - make
+    - cmake
+    - swig3.0
+    - tshark
+    - check
+    - rsync
+    - libpcap0.8
+    - gawk
+    - libedit2
+    - libpcre3
+
+- apt: name={{ item }} state=latest
+  with_items:
+    - pkg-config
+    - libnetfilter-queue1
+    - libmnl0
+    - libnfnetlink-dev
+    - libnetfilter-queue-dev
+
+- stat: path=/etc/{{ haka_file }}
+  register: haka_source
+- name: get {{ haka_file }}
+  get_url: url={{ haka_url }}/v{{ haka_ver }}/{{ haka_file }} dest=/etc
+  when: not haka_source.stat.exists
+- shell: dpkg -i {{ haka_file }}
+  when: haka_source.stat.exists
+  args:
+    chdir: /etc
+
+- stat: path=/etc/{{ nfqueue_file }}
+  register: nfqueue_source
+- name: get {{ nfqueue_file }}
+  get_url: url={{ haka_url }}/v{{ nfqueue_ver }}/{{ nfqueue_file }} dest=/etc
+  when: not nfqueue_source.stat.exists
+- shell: dpkg -i {{ nfqueue_file }}
+  when: nfqueue_source.stat.exists
+  args:
+    chdir: /etc
+
+- name: clone haka
+  git: repo=git@github.com:sai-lab/haka_rules.git dest=haka_rules accept_hostkey=yes
+  become: no
+- name: back up haka.conf
+  shell: mv /etc/haka/haka.conf /etc/haka/haka.conf.org creates=/etc/haka/haka.conf.org
+- name: symbolic link to $HOME/haka_rules/haka.conf
+  file: >
+    dest=/etc/haka/haka.conf
+    src=/home/vagrant/haka_rules/haka.conf
+    state=link
+
+- name: edit haka.conf
+  lineinfile: >-
+    dest='haka_rules/haka.conf'
+    state=present
+    backrefs=yes
+    regexp='^interfaces = "eth0"'
+    line='interfaces = "eth1"'
