@@ -1,2 +1,4 @@
 .vagrant/
 private_kay
+id_rsa.sec
+specificCAcert.der
